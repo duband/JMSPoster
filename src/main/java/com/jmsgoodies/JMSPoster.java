@@ -10,10 +10,11 @@ import java.io.*;
 import java.util.Map;
 import java.util.Properties;
 
-@Slf4j
+
 /**
  * Copyright belongs to Dub Andrei
  */
+@Slf4j
 public class JMSPoster {
 
     public static Properties loadProperties(String path) throws PosterException {
