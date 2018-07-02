@@ -12,7 +12,9 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.*;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.commons.lang3.SystemUtils;
 import java.io.File;
+import java.io.IOException;
 
 @Slf4j
 @Mojo(name = "install",requiresProject = false,requiresDependencyResolution = ResolutionScope.COMPILE)
@@ -27,10 +29,13 @@ public class JMSPosterPlugin extends AbstractMojo {
     private BuildPluginManager pluginManager;
 
 
-    @Parameter(property = "installationDirectory",defaultValue = "JMSPoster.jar")
+    @Parameter(property = "installationDirectory")
     private String installationDirectory;
-    public void execute()
-            throws MojoExecutionException {
+
+    @Parameter(property = "targetBrokerType")
+    private String targetBrokerType;
+
+    private void downloadJar() throws MojoExecutionException {
         log.info("Creating environment in "+installationDirectory);
         log.info("Downloading JMSPoster library into environment");
         String jarFile = "JMSPoster.jar";
@@ -63,7 +68,35 @@ public class JMSPosterPlugin extends AbstractMojo {
                 )
         );
 
+    }
 
+    public void createBatchFile( String installation) {
+        String fileName = null;
+        if(SystemUtils.IS_OS_WINDOWS){
+            fileName  =  installation+"//postMsg.bat";
+        }
+        else
+        if(SystemUtils.IS_OS_LINUX){
+            fileName  = installation+"//postMsg.sh";
+        }
+        else{
+            fileName  = installation+"//postMsg.sh";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("java com.jmsgoodies.JMSPoster connection.properties msg.properties payload.xml");
+
+        try {
+            MessageUtils.saveFile(fileName,sb.toString());
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    public void execute()
+            throws MojoExecutionException {
+        downloadJar();
+        createBatchFile(installationDirectory);
     }
 
     public void setInstallationDirectory(String installationDirectory) {
@@ -73,5 +106,13 @@ public class JMSPosterPlugin extends AbstractMojo {
     public String getInstallationDirectory() {
 
         return installationDirectory;
+    }
+
+    public String getTargetBrokerType() {
+        return targetBrokerType;
+    }
+
+    public void setTargetBrokerType(String targetBrokerType) {
+        this.targetBrokerType = targetBrokerType;
     }
 }
