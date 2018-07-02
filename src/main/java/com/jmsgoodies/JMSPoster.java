@@ -22,9 +22,12 @@ public class JMSPoster {
         InputStream input = null;
 
         try {
+            log.info("loading properties file "+path);
             File file = new File(path);
-            if (!file.exists())
+            if (!file.exists()){
+                log.error("File "+path+" does not exist");
                 throw new PosterException("File "+path+" does not exist");
+            }
             input = new FileInputStream(path);
 
 
@@ -95,17 +98,31 @@ public class JMSPoster {
     }
 
     public static void main(String[] args) throws NamingException, JMSException,PosterException {
-
         postMesssage(args[0], args[1], args[2]);
     }
 
 
     public static void postMesssage(String connectionPropFile, String msgPropertiesFile, String payloadFile)
             throws NamingException, JMSException,PosterException {
-        Properties connectionProp = loadProperties(connectionPropFile);
-        Properties msgProp = loadProperties(msgPropertiesFile);
-
-        postMesssage(connectionProp, msgProp, payloadFile);
+        File cd = new File("").getAbsoluteFile();
+        String currentDirectory = cd.getAbsolutePath();
+        if (connectionPropFile!=null){
+            Properties connectionProp = loadProperties(currentDirectory+"//"+connectionPropFile);
+            if (msgPropertiesFile!=null){
+                Properties msgProp = loadProperties(currentDirectory+"//"+msgPropertiesFile);
+                if (payloadFile!=null){
+                    postMesssage(connectionProp, msgProp, currentDirectory+"//"+payloadFile);
+                }
+                else{
+                    log.error("Please provide a payload file");
+                }
+            }
+            else{
+                log.error("Please provide a header properties file");
+            }
+        }
+        else
+            log.error("Please provide a connection properties file");
     }
 
 
@@ -184,6 +201,10 @@ public class JMSPoster {
             producer.close();
         } catch (Exception e) {
             log.error(e.getMessage());
+            for (StackTraceElement stackTraceElement:e.getStackTrace()){
+                log.error(stackTraceElement.toString());
+            }
+
         } finally {
 
             // Close the message producer

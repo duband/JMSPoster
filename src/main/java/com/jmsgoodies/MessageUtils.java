@@ -15,7 +15,7 @@ public class MessageUtils {
             propertiesFile = new File(fileName);
             fileOut = new FileOutputStream(propertiesFile);
 
-            injectProperties.store(fileOut, "Connection properties");
+            injectProperties.store(fileOut, "Properties file");
         }
         catch (FileNotFoundException e) {
             log.error(e.getMessage());
@@ -41,6 +41,15 @@ public class MessageUtils {
         injectProperties.setProperty("url", localBroker);
         injectProperties.setProperty("user", "");
         injectProperties.setProperty("password", "");
+        return injectProperties;
+    }
+
+    static public Properties getActiveMqProperties(){
+        Properties injectProperties = new Properties();
+        injectProperties.setProperty("java.naming.factory.initial", "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
+        injectProperties.setProperty("java.naming.provider.url", "tcp://localhost:61616");
+        injectProperties.setProperty("connectionFactoryNames","ConnectionFactory");
+        injectProperties.setProperty("queue.jms/queue","jms/queue");
         return injectProperties;
     }
 

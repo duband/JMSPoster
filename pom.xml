@@ -46,7 +46,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-broker</artifactId>
+            <artifactId>activemq-all</artifactId>
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>

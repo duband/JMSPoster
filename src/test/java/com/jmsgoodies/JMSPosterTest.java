@@ -86,9 +86,6 @@ public class JMSPosterTest {
         assertThat(injectProperties,is(extractedProperties));
     }
 
-    @org.junit.Test
-    public void main() {
-    }
 
 
     @org.junit.Test
