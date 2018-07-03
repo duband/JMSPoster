@@ -1,7 +1,6 @@
 package com.jmsgoodies;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 import javax.naming.NamingException;
@@ -25,7 +24,7 @@ public class JMSPosterTest {
     public static class PosterThread implements Runnable {
         public void run() {
 
-            Properties connectionProperties = MessageUtils.getConnectionProperties(queueName,localBroker);
+            Properties connectionProperties = MessageUtils.getActiveMQConnectionProperties(queueName,localBroker);
             MessageUtils.createPropertiesFile(connectionProperties,connectionFile);
 
             Properties headerProperties = MessageUtils.getHeaderProperties();
@@ -65,7 +64,7 @@ public class JMSPosterTest {
     public void loadProperties() {
         File propertiesFile = null;
         String fileName = "target/test-classes/connection.properties";
-        Properties injectProperties = MessageUtils.getConnectionProperties(queueName,localBroker);
+        Properties injectProperties = MessageUtils.getActiveMQConnectionProperties(queueName,localBroker);
 
         Properties extractedProperties = null;
         propertiesFile = new File(fileName);

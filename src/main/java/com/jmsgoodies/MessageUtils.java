@@ -32,13 +32,25 @@ public class MessageUtils {
 
     }
 
-    static public Properties getConnectionProperties(String queueName,String localBroker){
+    static public Properties getActiveMQConnectionProperties(String queueName, String activeMQlocalBroker){
         Properties injectProperties = new Properties();
         injectProperties.setProperty("connectionFactory", "ConnectionFactory");
         injectProperties.setProperty("queue", queueName);
         injectProperties.setProperty("initialContextFactory", "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
 
-        injectProperties.setProperty("url", localBroker);
+        injectProperties.setProperty("url", activeMQlocalBroker);
+        injectProperties.setProperty("user", "");
+        injectProperties.setProperty("password", "");
+        return injectProperties;
+    }
+
+    static public Properties getWeblogicConnectionProperties(String queueName, String localBroker){
+        Properties injectProperties = new Properties();
+        injectProperties.setProperty("connectionFactory", "ConnectionFactory");
+        injectProperties.setProperty("queue", queueName);
+        injectProperties.setProperty("initialContextFactory", "weblogic.jndi.WLInitialContextFactory");
+
+        injectProperties.setProperty("url", "t3://localhost:7001");
         injectProperties.setProperty("user", "");
         injectProperties.setProperty("password", "");
         return injectProperties;

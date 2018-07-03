@@ -97,7 +97,16 @@ public class JMSPosterPlugin extends AbstractMojo {
 
         StringBuilder sb = new StringBuilder();
         sb.append("java ");
-        sb.append("-cp \".\\;.\\lib;.\\lib\\Activemq.jar;.\\lib\\jndi.properties");
+        sb.append("-cp \".\\");
+
+        if (targetBrokerType != null) {
+            if (targetBrokerType.toUpperCase().equals("WEBLOGIC")) {
+                sb.append(".\\lib\\wlthint3client.jar");
+            } else if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
+                sb.append(".\\lib;.\\lib\\Activemq.jar");
+            }
+        }
+
         sb.append(";.\\lib\\JMSPoster.jar;.\\lib\\jms-api.jar");
         sb.append(";.\\lib\\slf4j.jar;.\\lib\\logback-core.jar");
         sb.append(";.\\lib\\logback-classic.jar");
@@ -118,9 +127,7 @@ public class JMSPosterPlugin extends AbstractMojo {
 
             } else if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
                 downloadJar("org.apache.activemq:activemq-all:5.15.4","lib/Activemq.jar");
-                downloadJar("javax.jms:javax.jms-api:2.0.1","lib/jms-api.jar");
             }
-            return;
         }
     }
 
@@ -131,8 +138,20 @@ public class JMSPosterPlugin extends AbstractMojo {
     }
 
     private void createPostingFiles(){
-        Properties connectionProperties = MessageUtils.getConnectionProperties(queueName,localBroker);
-        connectionProperties.setProperty("url","tcp://localhost:61616");
+        Properties connectionProperties = null;
+        if (targetBrokerType != null) {
+            if (targetBrokerType.toUpperCase().equals("WEBLOGIC")) {
+                connectionProperties = MessageUtils.getWeblogicConnectionProperties(queueName,localBroker);
+
+            } else if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
+                connectionProperties = MessageUtils.getActiveMQConnectionProperties(queueName,localBroker);
+                connectionProperties.setProperty("url","tcp://localhost:61616");
+            }
+        }
+        else{
+            connectionProperties = MessageUtils.getActiveMQConnectionProperties(queueName,localBroker);
+        }
+
         MessageUtils.createPropertiesFile(connectionProperties,installationDirectory+"//"+connectionFile);
 
         Properties headerProperties = MessageUtils.getHeaderProperties();
@@ -151,6 +170,7 @@ public class JMSPosterPlugin extends AbstractMojo {
             throws MojoExecutionException {
         downloadJar("com.jmsgoodies:JMSPoster:1.0-SNAPSHOT","lib/JMSPoster.jar");
         downloadBrokerJMSLibary();
+        downloadJar("javax.jms:javax.jms-api:2.0.1","lib/jms-api.jar");
         downloadJar("org.slf4j:slf4j-api:1.7.21","lib/slf4j.jar");
         downloadJar("ch.qos.logback:logback-classic:1.1.2","lib/logback-classic.jar");
         downloadJar("ch.qos.logback:logback-core:1.1.2","lib/logback-core.jar");
