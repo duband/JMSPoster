@@ -1,4 +1,4 @@
-JMS poster for Weblogic,ActiveMQ, and HornetQ
+JMS poster for Weblogic (tested on Weblogic 12.1.3 and 12.2.1) ,ActiveMQ, and HornetQ
 
 RUN:
 
@@ -10,8 +10,7 @@ mvn clean install
 
 mvn com.jmsgoodies:JMSPoster:1.0-SNAPSHOT:install -DinstallationDirectory=[your installation directory] -DtargetBrokerType=[activemq|weblogic|hornetq]
 
-if weblogic client(tested on Weblogic 12.1.3 and 12.2.1), copy Weblogic jar from [wlserver directory]/server/lib/wlthint3client.jar under /lib
+if you have chosen targetBrokerType as weblogic, copy the JMS Weblogic client jar from [wlserver directory]/server/lib/wlthint3client.jar to [current_jms_poster_intallation]/lib
  
-
 postMsg.bat
 
