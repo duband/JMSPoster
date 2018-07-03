@@ -1,4 +1,4 @@
-JMS poster for Weblogic (tested on Weblogic 12.1.3 and 12.2.1) ,ActiveMQ, and HornetQ
+JMS poster for Weblogic (tested on Weblogic 12.1.3 and 12.2.1) ,ActiveMQ (tested with ActiveMQ 5.11), and HornetQ
 
 RUN:
 
