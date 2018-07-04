@@ -15,5 +15,7 @@ mvn com.jmsgoodies:JMSPoster:1.0-SNAPSHOT:install -DinstallationDirectory=[your 
 
 if you have set the targetBrokerType to weblogic, copy the JMS Weblogic client jar wlthint3client.jar from [wlserver directory]/server/lib to [current_jms_poster_intallation]/lib
 
+cd [your installation directory]
+
 postMsg.bat
 
