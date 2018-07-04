@@ -23,11 +23,6 @@ public class JMSPosterPlugin extends AbstractMojo {
 
     public static String queueName = "jms/queue";
     public static String localBroker = "vm://localhost?broker.persistent=false";
-    public static String connectionFile = "connection.properties";
-    public static String activeMQJNDIFile = "lib/jndi.properties";
-
-    public static String headerFile = "header.properties";
-    public static String payloadFile = "payload.txt";
     public static String payloadMsg = "hello";
 
     @Component
@@ -96,8 +91,24 @@ public class JMSPosterPlugin extends AbstractMojo {
         }
 
         StringBuilder sb = new StringBuilder();
+
+        if (targetBrokerType != null) {
+            if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
+                sb.append("java ");
+                sb.append("-cp \".\\");
+                sb.append(";.\\lib\\JMSPoster.jar;.\\lib\\jms-api.jar");
+                sb.append(";.\\lib\\slf4j.jar;.\\lib\\logback-core.jar");
+                sb.append(";.\\lib\\logback-classic.jar");
+
+                sb.append("\" ");
+                sb.append("com.jmsgoodies.AdjustActiveMQJNDIFile connection.properties\n");
+
+            }
+        }
+
+
         sb.append("java ");
-        sb.append("-cp \".\\");
+        sb.append("-cp \".\\;");
 
         if (targetBrokerType != null) {
             if (targetBrokerType.toUpperCase().equals("WEBLOGIC")) {
@@ -132,8 +143,8 @@ public class JMSPosterPlugin extends AbstractMojo {
     }
 
     private void createActivemqProperties() {
-        Properties connectionProperties = MessageUtils.getActiveMqProperties();
-        MessageUtils.createPropertiesFile(connectionProperties,installationDirectory+"//"+activeMQJNDIFile);
+        Properties jndiProperties = MessageUtils.getActiveMqJNDIProperties();
+        MessageUtils.createPropertiesFile(jndiProperties,installationDirectory+"//"+JMSPoster.activeMQJNDIFile);
 
     }
 
@@ -152,14 +163,14 @@ public class JMSPosterPlugin extends AbstractMojo {
             connectionProperties = MessageUtils.getActiveMQConnectionProperties(queueName,localBroker);
         }
 
-        MessageUtils.createPropertiesFile(connectionProperties,installationDirectory+"//"+connectionFile);
+        MessageUtils.createPropertiesFile(connectionProperties,installationDirectory+"//"+JMSPoster.connectionFile);
 
         Properties headerProperties = MessageUtils.getHeaderProperties();
-        MessageUtils.createPropertiesFile(headerProperties,installationDirectory+"//"+ headerFile);
+        MessageUtils.createPropertiesFile(headerProperties,installationDirectory+"//"+ JMSPoster.headerFile);
 
 
         try {
-            MessageUtils.saveFile(installationDirectory+"//"+payloadFile,payloadMsg);
+            MessageUtils.saveFile(installationDirectory+"//"+JMSPoster.payloadFile,payloadMsg);
 
         } catch (IOException e) {
             log.error(e.getMessage());

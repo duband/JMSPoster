@@ -56,7 +56,7 @@ public class MessageUtils {
         return injectProperties;
     }
 
-    static public Properties getActiveMqProperties(){
+    static public Properties getActiveMqJNDIProperties(){
         Properties injectProperties = new Properties();
         injectProperties.setProperty("java.naming.factory.initial", "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
         injectProperties.setProperty("java.naming.provider.url", "tcp://localhost:61616");
@@ -78,4 +78,51 @@ public class MessageUtils {
         writer.write(content);
         writer.close();
     }
+
+    public static Properties loadProperties(String path) throws PosterException {
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+            log.info("loading properties file "+path);
+            File file = new File(path);
+            if (!file.exists()){
+                log.error("File "+path+" does not exist");
+                throw new PosterException("File "+path+" does not exist");
+            }
+            input = new FileInputStream(path);
+
+
+            prop.load(input);
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                }
+            }
+
+
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                }
+            }
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                }
+            }
+        }
+        return prop;
+    }
+
 }

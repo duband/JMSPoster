@@ -73,7 +73,7 @@ public class JMSPosterTest {
 
         MessageUtils.createPropertiesFile(injectProperties,fileName);
         try {
-            extractedProperties =  JMSPoster.loadProperties(propertiesFile.getPath());
+            extractedProperties =  MessageUtils.loadProperties(propertiesFile.getPath());
         } catch (PosterException e) {
             e.printStackTrace();
         }

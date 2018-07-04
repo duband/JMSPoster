@@ -17,51 +17,11 @@ import java.util.Properties;
 @Slf4j
 public class JMSPoster {
 
-    public static Properties loadProperties(String path) throws PosterException {
-        Properties prop = new Properties();
-        InputStream input = null;
+    public static String connectionFile = "connection.properties";
+    public static String activeMQJNDIFile = "lib/jndi.properties";
+    public static String headerFile = "header.properties";
+    public static String payloadFile = "payload.txt";
 
-        try {
-            log.info("loading properties file "+path);
-            File file = new File(path);
-            if (!file.exists()){
-                log.error("File "+path+" does not exist");
-                throw new PosterException("File "+path+" does not exist");
-            }
-            input = new FileInputStream(path);
-
-
-            prop.load(input);
-        } catch (IOException ex) {
-            log.error(ex.getMessage());
-
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                }
-            }
-
-
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                }
-            }
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                }
-            }
-        }
-        return prop;
-    }
 
     private static String readPayloadFile(String path) {
         StringBuilder sb = new StringBuilder();
@@ -107,9 +67,9 @@ public class JMSPoster {
         File cd = new File("").getAbsoluteFile();
         String currentDirectory = cd.getAbsolutePath();
         if (connectionPropFile!=null){
-            Properties connectionProp = loadProperties(currentDirectory+"//"+connectionPropFile);
+            Properties connectionProp = MessageUtils.loadProperties(currentDirectory+"//"+connectionPropFile);
             if (msgPropertiesFile!=null){
-                Properties msgProp = loadProperties(currentDirectory+"//"+msgPropertiesFile);
+                Properties msgProp = MessageUtils.loadProperties(currentDirectory+"//"+msgPropertiesFile);
                 if (payloadFile!=null){
                     postMesssage(connectionProp, msgProp, currentDirectory+"//"+payloadFile);
                 }
@@ -135,6 +95,7 @@ public class JMSPoster {
         Queue destination = null;
         TextMessage message = null;
         Context context = null;
+        String initialContextFactory = null;
         try {
             String user = connectionProp.getProperty("user");
             String password = connectionProp.getProperty("password");
@@ -145,7 +106,7 @@ public class JMSPoster {
             if (queueName==null)
                 throw new PosterException("Queue name is missing from properties files");
 
-            String initialContextFactory = connectionProp.getProperty("initialContextFactory");
+            initialContextFactory = connectionProp.getProperty("initialContextFactory");
             if (initialContextFactory==null)
                 throw new PosterException("InitialContextFactory name is missing from properties files");
 
@@ -199,7 +160,18 @@ public class JMSPoster {
             producer.send(message);
             log.info("Working!");
             producer.close();
-        } catch (Exception e) {
+
+        }
+        catch (NamingException e){
+            if (initialContextFactory!=null && initialContextFactory.contains("activemq")){
+                log.error("Could be an client ActiveMQ configuration issue.Make sure you duplicated your connection parameters in the properties file /lib/jndi.properties");
+            }
+            log.error(e.getMessage());
+            for (StackTraceElement stackTraceElement:e.getStackTrace()){
+                log.error(stackTraceElement.toString());
+            }
+        }
+        catch (Exception e) {
             log.error(e.getMessage());
             for (StackTraceElement stackTraceElement:e.getStackTrace()){
                 log.error(stackTraceElement.toString());
