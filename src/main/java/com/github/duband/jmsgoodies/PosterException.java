@@ -1,4 +1,4 @@
-package com.jmsgoodies;
+package com.github.duband.jmsgoodies;
 
 
 public class PosterException extends Exception {

@@ -1,4 +1,4 @@
-package com.jmsgoodies;
+package com.github.duband.jmsgoodies;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,6 +1,6 @@
-package com.jmsgoodies.example.spring;
+package com.github.duband.jmsgoodies.example.spring;
 
-import com.jmsgoodies.JMSPoster;
+import com.github.duband.jmsgoodies.JMSPoster;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

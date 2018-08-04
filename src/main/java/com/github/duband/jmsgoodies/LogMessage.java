@@ -1,10 +1,9 @@
-package com.jmsgoodies;
+package com.github.duband.jmsgoodies;
 
 import lombok.extern.slf4j.Slf4j;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
 

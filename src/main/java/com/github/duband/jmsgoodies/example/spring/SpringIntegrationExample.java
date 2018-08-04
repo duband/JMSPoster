@@ -1,8 +1,8 @@
-package com.jmsgoodies.example.spring;
+package com.github.duband.jmsgoodies.example.spring;
 
 
-import com.jmsgoodies.JMSPoster;
-import com.jmsgoodies.MessageUtils;
+import com.github.duband.jmsgoodies.JMSPoster;
+import com.github.duband.jmsgoodies.MessageUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Properties;

@@ -1,4 +1,4 @@
-package com.jmsgoodies;
+package com.github.duband.jmsgoodies;
 
 
 import javax.jms.Message;

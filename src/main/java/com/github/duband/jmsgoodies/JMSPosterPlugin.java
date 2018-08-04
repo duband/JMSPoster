@@ -1,4 +1,4 @@
-package com.jmsgoodies;
+package com.github.duband.jmsgoodies;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -112,7 +112,7 @@ public class JMSPosterPlugin extends AbstractMojo {
         sb.append(";.\\lib\\logback-classic.jar");
 
         sb.append("\" ");
-        sb.append("com.jmsgoodies.JMSPoster connection.properties header.properties payload.txt");
+        sb.append("JMSPoster connection.properties header.properties payload.txt");
 
         try {
             MessageUtils.saveFile(fileName,sb.toString());

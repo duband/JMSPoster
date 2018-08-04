@@ -1,7 +1,7 @@
-package com.jmsgoodies.example;
+package com.github.duband.jmsgoodies.example;
 
-import com.jmsgoodies.JMSPoster;
-import com.jmsgoodies.MessageUtils;
+import com.github.duband.jmsgoodies.JMSPoster;
+import com.github.duband.jmsgoodies.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Properties;

@@ -1,6 +1,6 @@
-package com.jmsgoodies.example.messagehandler;
+package com.github.duband.jmsgoodies.example.messagehandler;
 
-import com.jmsgoodies.MessageHandler;
+import com.github.duband.jmsgoodies.MessageHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.jms.JMSException;
