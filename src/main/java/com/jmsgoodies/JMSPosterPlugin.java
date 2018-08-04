@@ -143,7 +143,7 @@ public class JMSPosterPlugin extends AbstractMojo {
     }
 
     private void createActivemqProperties() {
-        Properties jndiProperties = MessageUtils.getActiveMqJNDIProperties();
+        Properties jndiProperties = MessageUtils.recreateActiveMqJNDIProperties();
         MessageUtils.createPropertiesFile(jndiProperties,installationDirectory+"//"+JMSPoster.activeMQJNDIFile);
 
     }
@@ -152,15 +152,15 @@ public class JMSPosterPlugin extends AbstractMojo {
         Properties connectionProperties = null;
         if (targetBrokerType != null) {
             if (targetBrokerType.toUpperCase().equals("WEBLOGIC")) {
-                connectionProperties = MessageUtils.getWeblogicConnectionProperties(queueName,localBroker);
+                connectionProperties = MessageUtils.recreateWeblogicConnectionProperties (queueName,localBroker);
 
             } else if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
-                connectionProperties = MessageUtils.getActiveMQConnectionProperties(queueName,localBroker);
+                connectionProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName,localBroker);
                 connectionProperties.setProperty("url","tcp://localhost:61616");
             }
         }
         else{
-            connectionProperties = MessageUtils.getActiveMQConnectionProperties(queueName,localBroker);
+            connectionProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName,localBroker);
         }
 
         MessageUtils.createPropertiesFile(connectionProperties,installationDirectory+"//"+JMSPoster.connectionFile);

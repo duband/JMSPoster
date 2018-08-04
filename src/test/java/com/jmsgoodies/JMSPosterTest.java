@@ -2,12 +2,13 @@ package com.jmsgoodies;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.jms.*;
+import javax.jms.JMSException;
 import javax.naming.NamingException;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
+
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -21,10 +22,10 @@ public class JMSPosterTest {
     public static String payloadMsg = "hello";
 
 
-    public static class PosterThread implements Runnable {
+    public static class PosterByUsingFilesThread implements Runnable {
         public void run() {
-
-            Properties connectionProperties = MessageUtils.getActiveMQConnectionProperties(queueName,localBroker);
+            JMSPoster jmsPoster = JMSPoster.getInstance();
+            Properties connectionProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName,localBroker);
             MessageUtils.createPropertiesFile(connectionProperties,connectionFile);
 
             Properties headerProperties = MessageUtils.getHeaderProperties();
@@ -38,7 +39,7 @@ public class JMSPosterTest {
             }
 
             try {
-                JMSPoster.postMesssage(connectionFile,headerFile,payloadFile);
+                jmsPoster.postMesssage(connectionFile,headerFile,payloadFile);
             } catch (NamingException e) {
                 log.error(e.getMessage());
             } catch (JMSException e) {
@@ -46,6 +47,17 @@ public class JMSPosterTest {
             } catch (PosterException e) {
                 log.error(e.getMessage());
             }
+
+        }
+    }
+
+
+    public static class PosterThread implements Runnable {
+        public void run() {
+            JMSPoster jmsPoster = JMSPoster.getInstance();
+            Properties connectionProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName,localBroker);
+            Properties headerProperties = MessageUtils.getHeaderProperties();
+            jmsPoster.postMesssage(connectionProperties,headerProperties,payloadMsg);
 
         }
     }
@@ -64,7 +76,7 @@ public class JMSPosterTest {
     public void loadProperties() {
         File propertiesFile = null;
         String fileName = "target/test-classes/connection.properties";
-        Properties injectProperties = MessageUtils.getActiveMQConnectionProperties(queueName,localBroker);
+        Properties injectProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName,localBroker);
 
         Properties extractedProperties = null;
         propertiesFile = new File(fileName);
@@ -88,14 +100,27 @@ public class JMSPosterTest {
 
 
     @org.junit.Test
-    public void postMesssage() {
-        String msg = ActivemqMsgReader.readMsg(queueName);
-        assertEquals(msg,payloadMsg);
+    public void postMesssageByUsingFiles() {
+        Thread thread = new Thread(new PosterByUsingFilesThread());
+        postMesssage(thread);
+
     }
 
 
 
+    @org.junit.Test
+    public void postMesssage() {
+        Thread thread = new Thread(new PosterThread());
+        postMesssage(thread);
+    }
 
+    public void postMesssage(Thread thread) {
+        JMSPoster jmsPoster = JMSPoster.getInstance();
+        Properties connectionProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName,localBroker);
+        thread.start();
+        String msg = jmsPoster.readMsg(connectionProperties);
+        assertEquals(msg,payloadMsg);
+    }
 
 
 }

@@ -3,10 +3,8 @@ package com.jmsgoodies;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.jms.*;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import java.io.*;
+import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
@@ -18,51 +16,27 @@ import java.util.Properties;
 public class JMSPoster {
 
     public static String connectionFile = "connection.properties";
-    public static String activeMQJNDIFile = "lib/jndi.properties";
+    public static String activeMQJNDIDirectory = "activemq-conf";
+    public static String activeMQJNDIFile = activeMQJNDIDirectory+"/jndi.properties";
     public static String headerFile = "header.properties";
     public static String payloadFile = "payload.txt";
 
+    private static JMSPoster jmsPoster;
 
-    private static String readPayloadFile(String path) {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader in = null;
-        try {
-            File fileDir = new File(path);
-
-            in = new BufferedReader(
-                    new InputStreamReader(
-                            new FileInputStream(fileDir), "UTF8"));
-
-            String str;
-
-            while ((str = in.readLine()) != null) {
-                sb.append(str);
-            }
-
-        } catch (UnsupportedEncodingException e) {
-            log.error(e.getMessage());
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                }
-            }
-        }
-        return sb.toString();
+    public static JMSPoster getInstance(){
+        if (jmsPoster==null)
+            jmsPoster = new JMSPoster();
+        return jmsPoster;
     }
+
 
     public static void main(String[] args) throws NamingException, JMSException,PosterException {
-        postMesssage(args[0], args[1], args[2]);
+        JMSPoster jmsPoster = JMSPoster.getInstance();
+        jmsPoster.postMesssage(args[0], args[1], args[2]);
     }
 
 
-    public static void postMesssage(String connectionPropFile, String msgPropertiesFile, String payloadFile)
+    public void postMesssage(String connectionPropFile, String msgPropertiesFile, String payloadFile)
             throws NamingException, JMSException,PosterException {
         File cd = new File("").getAbsoluteFile();
         String currentDirectory = cd.getAbsolutePath();
@@ -71,7 +45,8 @@ public class JMSPoster {
             if (msgPropertiesFile!=null){
                 Properties msgProp = MessageUtils.loadProperties(currentDirectory+"//"+msgPropertiesFile);
                 if (payloadFile!=null){
-                    postMesssage(connectionProp, msgProp, currentDirectory+"//"+payloadFile);
+                    String payload = MessageUtils.readPayloadFile(payloadFile);
+                    postMesssage(connectionProp, msgProp, payload);
                 }
                 else{
                     log.error("Please provide a payload file");
@@ -86,58 +61,21 @@ public class JMSPoster {
     }
 
 
-    private static void postMesssage(Properties connectionProp, Properties msgProp, String payloadFile)
-            throws NamingException, JMSException {
-        ConnectionFactory connectionFactory = null;
-        Connection connection = null;
+    public void postMesssage(Properties connectionProp, Properties msgProp, String payload){
+
         Session session = null;
         MessageProducer producer = null;
-        Queue destination = null;
         TextMessage message = null;
-        Context context = null;
+        Connection connection = null;
         String initialContextFactory = null;
+        Queue destination = null;
+
         try {
-            String user = connectionProp.getProperty("user");
-            String password = connectionProp.getProperty("password");
-            String connectionFactoryName = connectionProp.getProperty("connectionFactory");
-            if (connectionFactoryName==null)
-                throw new PosterException("Connection factory name is missing from properties files");
-            String queueName = connectionProp.getProperty("queue");
-            if (queueName==null)
-                throw new PosterException("Queue name is missing from properties files");
 
-            initialContextFactory = connectionProp.getProperty("initialContextFactory");
-            if (initialContextFactory==null)
-                throw new PosterException("InitialContextFactory name is missing from properties files");
-
-            String url = connectionProp.getProperty("url");
-            if (url==null)
-                throw new PosterException("URL name is missing from properties files");
-
-
-
-            Properties env = new Properties();
-
-            env.put("java.naming.factory.initial", initialContextFactory);
-            env.put("java.naming.provider.url", url);
-
-            env.put("java.naming.security.principal", user);
-            env.put("java.naming.security.credentials", password);
-
-            context = new InitialContext(env);
-
-            connectionFactory = (ConnectionFactory) context.lookup(connectionFactoryName);
-
-            log.info("lookup: " + connectionFactoryName + " success!");
-
-            destination = (Queue) context.lookup(queueName);
-
-            log.info("lookup: " + queueName + " success!");
-
-
-            log.info("connectionFactory.createContext success!");
-
-            connection = connectionFactory.createConnection(user, password);
+            MessageUtils.ConnectionSuite connectionSuite = MessageUtils.createConnectionSuit(connectionProp);
+            connection = connectionSuite.getConnection();
+            destination = connectionSuite.getDestination();
+            initialContextFactory = connectionSuite.getInitialContextFactory();
 
             log.info("connectionFactory.createConnection success!");
 
@@ -147,8 +85,6 @@ public class JMSPoster {
             log.info("session.createProducer success!");
 
             connection.start();
-
-            String payload = readPayloadFile(payloadFile);
 
 
             message = session.createTextMessage(payload);
@@ -164,7 +100,7 @@ public class JMSPoster {
         }
         catch (NamingException e){
             if (initialContextFactory!=null && initialContextFactory.contains("activemq")){
-                log.error("Could be an client ActiveMQ configuration issue.Make sure you duplicated your connection parameters in the properties file /lib/jndi.properties");
+                log.error("Lookup issue. Either queue or connection factory were not found..Make sure you duplicated your connection parameters in the properties file "+JMSPoster.activeMQJNDIDirectory+"/jndi.properties");
             }
             log.error(e.getMessage());
             for (StackTraceElement stackTraceElement:e.getStackTrace()){
@@ -201,6 +137,61 @@ public class JMSPoster {
                 log.error("Closing connection error: " + e);
             }
         }
+    }
+
+    public  String readMsg(Properties connectionProp){
+        MessageHandler messageHandler = new LogMessage();
+        String msg = readMsg(connectionProp,messageHandler);
+        return msg;
+    }
+
+    public String readMsg(Properties connectionProp,MessageHandler messageHandler){
+        String msg = null;
+        Session session = null;
+        Connection connection = null;
+        String initialContextFactory = null;
+        Queue destination = null;
+        try {
+
+            MessageUtils.ConnectionSuite connectionSuite = MessageUtils.createConnectionSuit(connectionProp);
+            connection = connectionSuite.getConnection();
+            destination = connectionSuite.getDestination();
+            initialContextFactory = connectionSuite.getInitialContextFactory();
+
+            // Create a Connection
+            connection.start();
+
+            // Create a Session
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+            String queueName = connectionProp.getProperty("queue");
+
+            // Create the destination (Topic or Queue)
+            destination = session.createQueue(queueName);
+
+            // Create a MessageConsumer from the Session to the Topic or Queue
+            MessageConsumer consumer = session.createConsumer(destination);
+
+            // receive message
+            msg =   consumeMessage(consumer,messageHandler);
+
+            consumer.close();
+            session.close();
+            connection.close();
+        } catch (Exception e) {
+            log.error("Caught: " + e);
+        }
+        return msg;
+    }
+
+    private static String consumeMessage(MessageConsumer consumer,MessageHandler messageHandler) throws JMSException{
+        String msg = null;
+        // Wait for a message
+        Message message = consumer.receive();
+        MessageHandler messageListener = null;
+        msg = messageHandler.handleMessage(message);
+        return msg;
+
     }
 
 }
