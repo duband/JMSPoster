@@ -98,6 +98,18 @@ public class MessageUtils {
         return injectProperties;
     }
 
+    static public Properties recreateHornet21JBoss71(String queueName, String localBroker){
+        Properties injectProperties = new Properties();
+        injectProperties.setProperty("connectionFactory", "jms/RemoteConnectionFactory");
+        injectProperties.setProperty("queue", queueName);
+        injectProperties.setProperty("initialContextFactory", "org.jboss.naming.remote.client.InitialContextFactory");
+
+        injectProperties.setProperty("url", "remote://localhost:4447");
+        injectProperties.setProperty("user", "");
+        injectProperties.setProperty("password", "");
+        return injectProperties;
+    }
+
     static public Properties recreateActiveMqJNDIProperties(){
         Properties injectProperties = new Properties();
         injectProperties.setProperty("java.naming.factory.initial", "org.apache.activemq.jndi.ActiveMQInitialContextFactory");

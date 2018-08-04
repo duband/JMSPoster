@@ -92,20 +92,6 @@ public class JMSPosterPlugin extends AbstractMojo {
 
         StringBuilder sb = new StringBuilder();
 
-        if (targetBrokerType != null) {
-            if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
-                sb.append("java ");
-                sb.append("-cp \".\\");
-                sb.append(";.\\lib\\JMSPoster.jar;.\\lib\\jms-api.jar");
-                sb.append(";.\\lib\\slf4j.jar;.\\lib\\logback-core.jar");
-                sb.append(";.\\lib\\logback-classic.jar");
-
-                sb.append("\" ");
-                sb.append("com.jmsgoodies.AdjustActiveMQJNDIFile connection.properties\n");
-
-            }
-        }
-
 
         sb.append("java ");
         sb.append("-cp \".\\;");
@@ -115,6 +101,9 @@ public class JMSPosterPlugin extends AbstractMojo {
                 sb.append(".\\lib\\wlthint3client.jar");
             } else if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
                 sb.append(".\\lib;.\\lib\\Activemq.jar");
+            }
+            else if (targetBrokerType.toUpperCase().equals("HORNETQ-JBOSS7.1")) {
+                sb.append(".\\lib\\jboss-client-7.1.0.Final.jar");
             }
         }
 
@@ -139,6 +128,7 @@ public class JMSPosterPlugin extends AbstractMojo {
             } else if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
                 downloadJar("org.apache.activemq:activemq-all:5.15.4","lib/Activemq.jar");
             }
+
         }
     }
 
@@ -157,6 +147,9 @@ public class JMSPosterPlugin extends AbstractMojo {
             } else if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
                 connectionProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName,localBroker);
                 connectionProperties.setProperty("url","tcp://localhost:61616");
+            }
+            else if (targetBrokerType.toUpperCase().equals("HORNETQ-JBOSS7.1")) {
+                connectionProperties = MessageUtils.recreateHornet21JBoss71(queueName,localBroker);
             }
         }
         else{

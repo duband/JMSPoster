@@ -11,11 +11,17 @@ mvn clean install
 
 
 
-mvn com.jmsgoodies:JMSPoster:1.0-SNAPSHOT:install -DinstallationDirectory=[your installation directory] -DtargetBrokerType=[activemq|weblogic|hornetq]
+mvn com.jmsgoodies:JMSPoster:1.0-SNAPSHOT:install -DinstallationDirectory=[your installation directory] -DtargetBrokerType=[activemq|weblogic|hornetq-jboss7.1]
+
 
 if you have set the targetBrokerType to weblogic, copy the JMS Weblogic client jar wlthint3client.jar from [wlserver directory]/server/lib to [current_jms_poster_installation]/lib
 
+if you have set the targetBrokerType to hornetq-jboss7.1, copy the JMS Weblogic client jar jboss-client-7.1.0.Final.jar from [wlserver directory]/bin/client to [current_jms_poster_installation]/lib
+
 cd [your installation directory]
 
-postMsg.bat
+Make sure the values in the file connection.properties suit your broker
 
+run :
+
+postMsg.bat
