@@ -24,7 +24,7 @@ public class ProducerExample {
         String payload = "hello";
         JMSPoster jmsPoster = JMSPoster.getInstance();
         Properties connectionProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName,localBroker);
-        Properties headerProperties = MessageUtils.getHeaderProperties();
+        Properties headerProperties = MessageUtils.recreateExampleHeaderProperties();
         jmsPoster.postMesssage(connectionProperties,headerProperties,payload);
     }
 }

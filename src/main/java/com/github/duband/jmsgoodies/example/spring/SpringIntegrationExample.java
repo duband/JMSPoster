@@ -31,7 +31,7 @@ public class SpringIntegrationExample {
         String payload = "hello";
 
         Properties connectionProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName, localBroker);
-        Properties headerProperties = MessageUtils.getHeaderProperties();
+        Properties headerProperties = MessageUtils.recreateExampleHeaderProperties();
         jmsPoster.postMesssage(connectionProperties, headerProperties, payload);
 
     }

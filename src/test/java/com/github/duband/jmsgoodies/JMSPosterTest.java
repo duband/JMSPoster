@@ -33,7 +33,7 @@ public class JMSPosterTest {
             Properties connectionProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName,localBroker);
             MessageUtils.createPropertiesFile(connectionProperties,connectionFile);
 
-            Properties headerProperties = MessageUtils.getHeaderProperties();
+            Properties headerProperties = MessageUtils.recreateExampleHeaderProperties();
             MessageUtils.createPropertiesFile(headerProperties,headerFile);
 
             try {
@@ -61,7 +61,7 @@ public class JMSPosterTest {
         public void run() {
             JMSPoster jmsPoster = JMSPoster.getInstance();
             Properties connectionProperties = MessageUtils.recreateActiveMQConnectionProperties(queueName,localBroker);
-            Properties headerProperties = MessageUtils.getHeaderProperties();
+            Properties headerProperties = MessageUtils.recreateExampleHeaderProperties();
             jmsPoster.postMesssage(connectionProperties,headerProperties,payloadMsg);
 
         }

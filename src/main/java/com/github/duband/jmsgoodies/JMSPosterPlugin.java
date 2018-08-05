@@ -163,7 +163,7 @@ public class JMSPosterPlugin extends AbstractMojo {
 
         MessageUtils.createPropertiesFile(connectionProperties,installationDirectory+"//"+JMSPoster.connectionFile);
 
-        Properties headerProperties = MessageUtils.getHeaderProperties();
+        Properties headerProperties = MessageUtils.recreateExampleHeaderProperties();
         MessageUtils.createPropertiesFile(headerProperties,installationDirectory+"//"+ JMSPoster.headerFile);
 
 

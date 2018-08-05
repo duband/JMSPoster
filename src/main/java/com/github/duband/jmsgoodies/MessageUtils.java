@@ -124,7 +124,7 @@ public class MessageUtils {
         return injectProperties;
     }
 
-    static public Properties getHeaderProperties(){
+    static public Properties recreateExampleHeaderProperties(){
         Properties injectProperties = new Properties();
         injectProperties.setProperty("SOURCE", "mySource");
         injectProperties.setProperty("TARGET", "myHeader");
