@@ -30,3 +30,7 @@ if you have set the targetBrokerType to weblogic, copy the JMS Weblogic client j
 
 if you have set the targetBrokerType to hornetq-jboss7.1, copy the JMS Weblogic client jar jboss-client-7.1.0.Final.jar from [wlserver directory]/bin/client to [current_jms_poster_installation]/lib
 
+
+More instructions to follow on :
+
+http://javagoogleappspot.blogspot.com/2018/07/a-client-to-easily-post-messages-to.html
