@@ -9,6 +9,34 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
+	
+	<properties>
+      <project.scm.id>github</project.scm.id>
+    </properties>
+	
+	<!-- do not commit -->
+	<scm>
+		<connection>scm:git:git://github.com/duband/JMSPoster.git</connection>
+		<developerConnection>scm:git:git://github.com/duband/JMSPoster.git</developerConnection>
+		<url>https://github.com/duband/JMSPoster</url>
+		<tag>HEAD</tag>
+	</scm>
+
+     <distributionManagement>
+
+		<snapshotRepository>
+		<id>${drId}</id>
+		<url>${snapshotRepo}</url>
+		</snapshotRepository>
+		<repository>
+		<id>${drId}</id>
+		<url>${releaseRepo}</url>
+		</repository>	
+	</distributionManagement> 
+	  
+	  <!-- end -->
+	
+	
     <dependencies>
 
         <dependency>
@@ -109,6 +137,107 @@
             <artifactId>maven-plugin-plugin</artifactId>
             <version>3.4</version>
         </plugin>
+		
+		<!-- do not commit to repository-->
+
+		
+		
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-release-plugin</artifactId>
+			<version>2.5.3</version>
+			<configuration>
+			<localCheckout>true</localCheckout>
+			<pushChanges>false</pushChanges>
+			<mavenExecutorId>forked-path</mavenExecutorId>
+			<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
+			</configuration>
+			<dependencies>
+			<dependency>
+			<groupId>org.apache.maven.scm</groupId>
+			<artifactId>maven-scm-provider-gitexe</artifactId>
+			<version>1.9.5</version>
+			</dependency>
+			</dependencies>
+		</plugin>
+			
+		<plugin>
+			<groupId>org.sonatype.plugins</groupId>
+			<artifactId>nexus-staging-maven-plugin</artifactId>
+			<version>1.6.7</version>
+			<extensions>true</extensions>
+			<configuration>
+			<serverId>${drId}</serverId>
+			<nexusUrl>${nexusURL}</nexusUrl>
+			<autoReleaseAfterClose>true</autoReleaseAfterClose>
+			</configuration>
+		</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+				<execution>
+				<id>attach-sources</id>
+				<goals>
+				<goal>jar</goal>
+				</goals>
+				</execution>
+				</executions>
+			</plugin>			
+			
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+				<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+				<execution>
+				<id>attach-javadoc</id>
+				<goals>
+					<goal>jar</goal>
+				</goals>
+				</execution>  
+				</executions>
+			</plugin>			
+			
+			<!-- end part -->
     </plugins>
     </build>
+	
+	<profiles>
+		<!-- GPG Signature on release -->
+		<profile>
+		<id>release-sign-artifacts</id>
+		<activation>
+		<property>
+		<name>performRelease</name>
+		<value>true</value>
+		</property>
+		</activation>
+		<build>
+		<plugins>
+		<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-gpg-plugin</artifactId>
+		<version>1.6</version>
+		<executions>
+		<execution>
+		<id>sign-artifacts</id>
+		<phase>verify</phase>
+		<goals>
+		<goal>sign</goal>
+		</goals>
+		</execution>
+		</executions>
+		</plugin>
+		</plugins>
+		</build>
+		</profile>
+    </profiles>
+
+
 </project>
