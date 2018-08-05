@@ -7,6 +7,11 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 
+/**
+ * MIT Copyright
+ * Code produced by Dub Andrei
+ * http://javagoogleappspot.blogspot.com
+ */
 
 @Slf4j
 public class HandlerExample implements MessageHandler {

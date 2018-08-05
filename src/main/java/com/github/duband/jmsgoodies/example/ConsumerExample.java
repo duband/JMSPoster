@@ -5,6 +5,11 @@ import com.github.duband.jmsgoodies.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Properties;
+/**
+ * MIT Copyright
+ * Code produced by Dub Andrei
+ * http://javagoogleappspot.blogspot.com
+ */
 
 @Slf4j
 public class ConsumerExample {

@@ -6,6 +6,11 @@ import com.github.duband.jmsgoodies.MessageUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Properties;
+/**
+ * MIT Copyright
+ * Code produced by Dub Andrei
+ * http://javagoogleappspot.blogspot.com
+ */
 
 public class SpringIntegrationExample {
     public static void main(String[] args) {

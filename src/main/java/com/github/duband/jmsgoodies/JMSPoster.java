@@ -10,8 +10,11 @@ import java.util.Properties;
 
 
 /**
- * Copyright belongs to Dub Andrei
+ * MIT Copyright
+ * Code produced by Dub Andrei
+ * http://javagoogleappspot.blogspot.com
  */
+
 @Slf4j
 public class JMSPoster {
 

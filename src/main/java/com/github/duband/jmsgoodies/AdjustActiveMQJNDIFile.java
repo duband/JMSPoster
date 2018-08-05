@@ -10,6 +10,11 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
 import java.util.Properties;
+/**
+ * MIT Copyright
+ * Code produced by Dub Andrei
+ * http://javagoogleappspot.blogspot.com
+ */
 
 @Slf4j
 public class AdjustActiveMQJNDIFile {

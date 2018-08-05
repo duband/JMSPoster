@@ -16,6 +16,11 @@ import org.apache.commons.lang3.SystemUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
+/**
+ * MIT Copyright
+ * Code produced by Dub Andrei
+ * http://javagoogleappspot.blogspot.com
+ */
 
 @Slf4j
 @Mojo(name = "install",requiresProject = false,requiresDependencyResolution = ResolutionScope.COMPILE)

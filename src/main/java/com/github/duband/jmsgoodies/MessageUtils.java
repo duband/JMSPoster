@@ -11,6 +11,11 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.io.*;
 import java.util.Properties;
+/**
+ * MIT Copyright
+ * Code produced by Dub Andrei
+ * http://javagoogleappspot.blogspot.com
+ */
 
 @Slf4j
 public class MessageUtils {
