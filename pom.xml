@@ -4,21 +4,37 @@
 
     <groupId>com.github.duband</groupId>
     <artifactId>jmsposter</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
+	<name>JMSPoster plugin</name>
+	<description>JMS client for Weblogic (tested on Weblogic 12.1.3 and 12.2.1) ,ActiveMQ (tested with ActiveMQ 5.11 and 5.15.4), and HornetQ 2.2.11 (included in JBoss 7.1)</description>
+	<url>https://github.com/kevinsawicki/github-maven-example</url>
 	
-	<properties>
-      <project.scm.id>github</project.scm.id>
-    </properties>
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	
 	<scm>
 		<connection>scm:git:ssh://git@github.com//duband/JMSPoster.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com//duband/JMSPoster.git</developerConnection>
 		<url>https://github.com/duband/JMSPoster</url>
 	  <tag>HEAD</tag>
-  </scm>
+    </scm>
 
+	<developers>
+		<developer>
+			<email>dub.andrei@gmail.com</email>
+			<name>Dub Andrei</name>
+			<url>https://github.com/duband</url>
+			<id>duband</id>
+		</developer>
+	</developers>
+	
      <distributionManagement>
 
 		<snapshotRepository>
