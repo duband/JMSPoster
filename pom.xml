@@ -12,7 +12,6 @@
       <project.scm.id>github</project.scm.id>
     </properties>
 	
-	<!-- do not commit -->
 	<scm>
 		<connection>scm:git:git://github.com/duband/JMSPoster.git</connection>
 		<developerConnection>scm:git:git://github.com/duband/JMSPoster.git</developerConnection>
@@ -32,8 +31,8 @@
 		</repository>	
 	</distributionManagement> 
 	  
-	  <!-- end -->
-	
+
+	  
 	
     <dependencies>
 
@@ -147,9 +146,16 @@
             <version>3.4</version>
         </plugin>
 		
-		<!-- do not commit to repository-->
-
 		
+		
+ 	  <plugin>
+		 <groupId>org.apache.maven.plugins</groupId>
+		 <artifactId>maven-deploy-plugin</artifactId>
+		 <version>2.4</version>
+		 <configuration>
+		   <skip>true</skip>
+		 </configuration>
+	   </plugin> 		
 		
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
@@ -169,18 +175,27 @@
 			</dependency>
 			</dependencies>
 		</plugin>
-			
-		<plugin>
-			<groupId>org.sonatype.plugins</groupId>
-			<artifactId>nexus-staging-maven-plugin</artifactId>
-			<version>1.6.7</version>
-			<extensions>true</extensions>
-			<configuration>
-				<serverId>${drId}</serverId>
-				<nexusUrl>${nexusSite}</nexusUrl>
-				<autoReleaseAfterClose>true</autoReleaseAfterClose>
-			</configuration>
-		</plugin>
+
+	        <plugin>
+               <groupId>org.sonatype.plugins</groupId>
+               <artifactId>nexus-staging-maven-plugin</artifactId>
+               <version>1.5.1</version>
+               <executions>
+                  <execution>
+                     <id>default-deploy</id>
+                     <phase>deploy</phase>
+                     <goals>
+                        <goal>deploy</goal>
+                     </goals>
+                  </execution>
+               </executions>
+               <configuration>
+                  <serverId>${drId}</serverId>
+                  <nexusUrl>${nexusSite}</nexusUrl>
+                  <skipStaging>true</skipStaging>
+               </configuration>
+            </plugin>	
+
 			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -213,39 +228,39 @@
 				</executions>
 			</plugin>			
 			
-			<!-- end part -->
     </plugins>
     </build>
 	
 	<profiles>
-		<!-- GPG Signature on release -->
+	
 		<profile>
-		<id>release-sign-artifacts</id>
-		<activation>
-		<property>
-		<name>performRelease</name>
-		<value>true</value>
-		</property>
-		</activation>
-		<build>
-		<plugins>
-		<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-gpg-plugin</artifactId>
-		<version>1.6</version>
-		<executions>
-		<execution>
-		<id>sign-artifacts</id>
-		<phase>verify</phase>
-		<goals>
-		<goal>sign</goal>
-		</goals>
-		</execution>
-		</executions>
-		</plugin>
-		</plugins>
-		</build>
+			<id>release-sign-artifacts</id>
+			<activation>
+			<property>
+			<name>performRelease</name>
+			<value>true</value>
+			</property>
+			</activation>
+			<build>
+			<plugins>
+			<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-gpg-plugin</artifactId>
+			<version>1.6</version>
+			<executions>
+			<execution>
+			<id>sign-artifacts</id>
+			<phase>verify</phase>
+			<goals>
+			<goal>sign</goal>
+			</goals>
+			</execution>
+			</executions>
+			</plugin>
+			</plugins>
+			</build>
 		</profile>
+		
     </profiles>
 
 
