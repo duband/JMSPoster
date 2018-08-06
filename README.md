@@ -1,4 +1,4 @@
-JMS client for Weblogic (tested on Weblogic 12.1.3 and 12.2.1) ,ActiveMQ (tested with ActiveMQ 5.11 and 5.15.4), and HornetQ 2.2.11 (included in JBoss 7.1)
+JMS client for Weblogic (tested on Weblogic 12.1.3 and 12.2.1) ,ActiveMQ (tested with ActiveMQ 5.11 and 5.15.4), and HornetQ 2.2.11 (embedded in JBoss 7.1)
 
 To install the artefact in your maven repository, RUN:
 
