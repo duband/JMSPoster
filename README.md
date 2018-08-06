@@ -17,7 +17,7 @@ mvn com.github.duband:jmsposter:[version]:install -DinstallationDirectory=[your 
 cd [your installation directory]
 
 
-Make sure the values in the file connection.properties suit your broker)
+Make sure the values in the file connection.properties match your broker
 
 RUN :
 
