@@ -12,7 +12,7 @@ mvn clean install
 Once installed, to create a batch environment, RUN:
 
 
-mvn com.github.duband:jmsposter:1.0-SNAPSHOT:install -DinstallationDirectory=[your installation directory] -DtargetBrokerType=[activemq|weblogic|hornetq-jboss7.1]
+mvn com.github.duband:jmsposter:[version]:install -DinstallationDirectory=[your installation directory] -DtargetBrokerType=[activemq|weblogic|hornetq-jboss7.1]
 
 cd [your installation directory]
 

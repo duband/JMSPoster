@@ -46,6 +46,9 @@ public class JMSPosterPlugin extends AbstractMojo {
     @Parameter(property = "targetBrokerType")
     private String targetBrokerType;
 
+    @Parameter(defaultValue = "${project}", readonly = true, required = true)
+    private MavenProject project;
+
     private void downloadJar(String artifactId,String jarFile) throws MojoExecutionException {
         log.info("Creating environment in "+installationDirectory);
         log.info("Downloading JMSPoster library into environment");
@@ -117,13 +120,21 @@ public class JMSPosterPlugin extends AbstractMojo {
         sb.append(";.\\lib\\logback-classic.jar");
 
         sb.append("\" ");
-        sb.append("JMSPoster connection.properties header.properties payload.txt");
+
+        String jmsPosterclazzName = JMSPoster.class.getCanonicalName();
+
+        sb.append(jmsPosterclazzName+" connection.properties header.properties payload.txt");
 
         try {
             MessageUtils.saveFile(fileName,sb.toString());
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+    }
+
+    public  static void main(String[] args){
+        String clazzName = JMSPoster.class.getCanonicalName();
+        System.out.println(clazzName);
     }
 
     public void downloadBrokerJMSLibary() throws MojoExecutionException {
@@ -175,9 +186,19 @@ public class JMSPosterPlugin extends AbstractMojo {
         }
     }
 
+
+    public String getArtefactSignature(){
+        String groupId = project.getGroupId();
+        String artefactId = project.getArtifactId();
+        String version = project.getVersion();
+        String artefactSignature = groupId+":"+artefactId+":"+version;
+        return  artefactSignature;
+    }
+
     public void execute()
             throws MojoExecutionException {
-        downloadJar("com.jmsgoodies:JMSPoster:1.0-SNAPSHOT","lib/JMSPoster.jar");
+        String artefactSignature = getArtefactSignature();
+        downloadJar(artefactSignature,"lib/JMSPoster.jar");
         downloadBrokerJMSLibary();
         downloadJar("javax.jms:javax.jms-api:2.0.1","lib/jms-api.jar");
         downloadJar("org.slf4j:slf4j-api:1.7.21","lib/slf4j.jar");
