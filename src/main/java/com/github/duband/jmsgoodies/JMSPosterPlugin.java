@@ -113,6 +113,9 @@ public class JMSPosterPlugin extends AbstractMojo {
             else if (targetBrokerType.toUpperCase().equals("HORNETQ-JBOSS7.1")) {
                 sb.append(".\\lib\\jboss-client-7.1.0.Final.jar");
             }
+            else if (targetBrokerType.toUpperCase().equals("HORNETQ-WILDFLY8.2")) {
+                sb.append(".\\lib\\jboss-client.jar");
+            }
         }
 
         sb.append(";.\\lib\\JMSPoster.jar;.\\lib\\jms-api.jar");
@@ -166,6 +169,9 @@ public class JMSPosterPlugin extends AbstractMojo {
             }
             else if (targetBrokerType.toUpperCase().equals("HORNETQ-JBOSS7.1")) {
                 connectionProperties = MessageUtils.recreateHornet21JBoss71(queueName,localBroker);
+            }
+            else if (targetBrokerType.toUpperCase().equals("HORNETQ-WILDFLY8.2")) {
+                connectionProperties = MessageUtils.recreateHornet245Wildfly82(queueName,localBroker);
             }
         }
         else{
