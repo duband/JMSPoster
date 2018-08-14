@@ -29,6 +29,7 @@ public class JMSPosterPlugin extends AbstractMojo {
     public static String queueName = "jms/queue";
     public static String localBroker = "vm://localhost?broker.persistent=false";
     public static String payloadMsg = "hello";
+    public static String mavenCentral = "https://repo.maven.apache.org/maven2/";
 
     @Component
     private MavenProject mavenProject;
@@ -49,7 +50,9 @@ public class JMSPosterPlugin extends AbstractMojo {
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
 
-    private void downloadJar(String artifactId,String jarFile) throws MojoExecutionException {
+    //TODO mvn dependency:copy-dependencies -DoutputDirectory=.\
+
+    private void downloadJar(String artifactId,String jarFile,String repository) throws MojoExecutionException {
         log.info("Creating environment in "+installationDirectory);
         log.info("Downloading JMSPoster library into environment");
         if (installationDirectory==null){
@@ -62,6 +65,11 @@ public class JMSPosterPlugin extends AbstractMojo {
         }
         jarFile = installationDirectory + "//"+jarFile;
 
+        Element[] elements = new Element[4];
+        elements[0] = element(name("artifact"), artifactId);
+        elements[1] = element(name("transitive"), "false");
+        elements[2] = element(name("destination"), jarFile);
+        elements[3] = element(name("remoteRepositories"), repository);
 
         executeMojo(
                 plugin(
@@ -71,10 +79,7 @@ public class JMSPosterPlugin extends AbstractMojo {
                 ),
                 goal("get"),
                 configuration(
-                        element(name("artifact"), artifactId),
-                        element(name("transitive"), "false"),
-                        element(name("destination"), jarFile)
-
+                    elements
                 ),
                 executionEnvironment(
                         mavenProject,
@@ -103,25 +108,7 @@ public class JMSPosterPlugin extends AbstractMojo {
 
         sb.append("java ");
         sb.append("-cp \".\\;");
-
-        if (targetBrokerType != null) {
-            if (targetBrokerType.toUpperCase().equals("WEBLOGIC")) {
-                sb.append(".\\lib\\wlthint3client.jar");
-            } else if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
-                sb.append(".\\lib;.\\lib\\Activemq.jar");
-            }
-            else if (targetBrokerType.toUpperCase().equals("HORNETQ-JBOSS7.1")) {
-                sb.append(".\\lib\\jboss-client-7.1.0.Final.jar");
-            }
-            else if (targetBrokerType.toUpperCase().equals("HORNETQ-WILDFLY8.2")) {
-                sb.append(".\\lib\\jboss-client.jar");
-            }
-        }
-
-        sb.append(";.\\lib\\JMSPoster.jar;.\\lib\\jms-api.jar");
-        sb.append(";.\\lib\\slf4j.jar;.\\lib\\logback-core.jar");
-        sb.append(";.\\lib\\logback-classic.jar");
-
+        sb.append(".\\lib\\*");
         sb.append("\" ");
 
         String jmsPosterclazzName = JMSPoster.class.getCanonicalName();
@@ -145,7 +132,7 @@ public class JMSPosterPlugin extends AbstractMojo {
             if (targetBrokerType.toUpperCase().equals("WEBLOGIC")) {
 
             } else if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
-                downloadJar("org.apache.activemq:activemq-all:5.15.4","lib/Activemq.jar");
+                downloadJar("org.apache.activemq:activemq-all:5.15.4","lib/Activemq.jar",mavenCentral);
             }
 
         }
@@ -204,12 +191,12 @@ public class JMSPosterPlugin extends AbstractMojo {
     public void execute()
             throws MojoExecutionException {
         String artefactSignature = getArtefactSignature();
-        downloadJar(artefactSignature,"lib/JMSPoster.jar");
+        downloadJar(artefactSignature,"lib/JMSPoster.jar",mavenCentral);
         downloadBrokerJMSLibary();
-        downloadJar("javax.jms:javax.jms-api:2.0.1","lib/jms-api.jar");
-        downloadJar("org.slf4j:slf4j-api:1.7.21","lib/slf4j.jar");
-        downloadJar("ch.qos.logback:logback-classic:1.1.2","lib/logback-classic.jar");
-        downloadJar("ch.qos.logback:logback-core:1.1.2","lib/logback-core.jar");
+        downloadJar("javax.jms:javax.jms-api:2.0.1","lib/jms-api.jar",mavenCentral);
+        downloadJar("org.slf4j:slf4j-api:1.7.21","lib/slf4j.jar",mavenCentral);
+        downloadJar("ch.qos.logback:logback-classic:1.1.2","lib/logback-classic.jar",mavenCentral);
+        downloadJar("ch.qos.logback:logback-core:1.1.2","lib/logback-core.jar",mavenCentral);
 
 
         createBatchFile();
@@ -218,6 +205,10 @@ public class JMSPosterPlugin extends AbstractMojo {
             if (targetBrokerType.toUpperCase().equals("ACTIVEMQ")) {
                 createActivemqProperties();
             }
+            else if (targetBrokerType.toUpperCase().equals("HORNETQ-JBOSS7.1")) {
+                downloadJar("org.jboss.as:jboss-as-jms-client-bom:7.1.0.Final:pom","pom/pom.xml","http://repository.jboss.org/nexus/content/groups/public-jboss/");
+            }
+
         }
 
     }

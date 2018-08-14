@@ -45,9 +45,20 @@
 		<id>${drId}</id>
 		<url>${releaseRepo}</url>
 		</repository>	
-	</distributionManagement> 
-	  
+	</distributionManagement>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jboss.as</groupId>
+				<artifactId>jboss-as-ejb-client-bom</artifactId>
+				<version>7.1.0.Final</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
 	  
 	
     <dependencies>
