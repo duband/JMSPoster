@@ -1,0 +1,77 @@
+Milleu de travail. Dans le cadre du service fèdèral des pensions essentielement on s'en
+occupe du calcul et du paiement des droits de pension, à present on ne utilise pas l'intelligence
+artificielle. Pourtant, l'introduction de cette technologie peut marquer un tournant dans la
+manière ou nous utilisons déjà les outils informatiques. Voilà l'mpact sur nos taches actuelles.
+Dans la géstion des donnèes de carriére. Les données sont sauvées de façons differentes
+selon la typologie de carrière du citoyen (voir salarié, indepedant ou fonctionnaire). Cet'aspect
+rend plus difficile l'extraction de ces données, une tache qui est constantemment penible pour
+nos techniciens a realiser. On arrive souvent de ne pas pouvoir aligner les dates de
+carrière dans une ordre chronologique correcte. On voudrait trouver une maniére uniformisée
+de organiser les données. L'intelligence artificielle peut y etre entrainnée pour comprendre ces
+données et les relations y survenues.
+La demande de pension. Actuellement, la premiére phase de demande est traitée par un
+humaine qui se trouve dans un guichet ou un bureau. L'intelligence artificielle nous permettra
+de communiquer avec le public et prendre en charge les demandes de pension. Cela va eviter
+une surcharge de travail pour les humaines afin d'examiner les demandes de pension.
+Gérer l'attribution des droits de pension. La pension est constituée sur la base de cumul des
+droits de pension. Pour determiner auxquells des droits le pensioné en a droit, il faut suivre
+une longue chaine de pas reglementés par l'etat. Souvent ces droits ne sont pas déterminer
+correctement. Cependant, l'intelligence artificielle peut intervenir pour comparer de façon
+proactive si les droits acquis ont étés correctement octroyés.
+Gérer les paiements de pension. Le deroulement des paiements se fait à une date precise et
+graçe a nos systèmes automatisés qui sont déjà en place. L'intelligence artificielle peut etre
+introduite pour veiller sur l'execution correcte des paiements et la signalation des potentielles
+fraudes, par consequent, sonner l'alarme.
+En ce qui regarde mes arguments sur l'utilisation de l'intelligence artificielle dans notre
+millieu, je vais presenter deux arguments à faveur de cela.
+Premiére raison soutenant l'adoption de l'IA, rappresente l'aspect financier : dans notre
+département on se base en grande parte sur le travail des consultants. La plupart des
+consultants travaillent dans le cadre de la manutention de nos systèmes
+informatiques. Désormais, on est obligé d'assurer la charge maximale des pensions traitées et
+de maitriser les erreurs soulevèes avec un budget qui ne cesse de diminuer. On a sous gestion
+un total de 2,5 millions de pensionés avec une pension moyenne de 1900 euro. La
+manutention rappresente prèsque 80% de notre buget. Nèamoins, avec la hausse des prix, on
+voit notre budget s'evaporer . Une grande partie de ces processus etre surveillès par des
+mechansimes de l'intelligence artificielle.
+Deuxièment comme argument, il faut assurer une haute qualité des éstimations et des calculs
+des paiements. La précision est cruciale dans notre domaine. Pour cela, on fait usage pour
+l'instant des humaines (consultants) qui essayent de façcon manuelle a decouvrir des
+anomalies dans les chiffres, ce qui rend tout le processus à nouveau tres penible. Vu que
+
+l'intelligence artificielle est capable d'apprendre sans l'intervenition humaine, on
+pourra développer des modèles d'apprentissage autonomes qui seront capables d'aboutir les
+memes resultats à un prix plus bas.
+Dans mon travail quotidien, je m'en occupe en outre de l'échange des donées de carrière et
+pension avec les autres services federaux, comme par example, l'INASTI (l'lnstitut national
+d'assurances pour les travailleurs indépendants). Toutes les échanges se font de façon
+automatique mais programmée en préalable ce qui donne suite à beacoup d'erreurs. La
+programmation est faite par des humaines et donc est susceptible de ne pas etre parfaite.
+L'intelligence artificielle y pourra etre introduite pour comprendre les flux de données et la
+necessité de les programmer de une certaine façon. Une fois que l'outil intelligent a compris la
+strategie, il pourra lui meme matriser cette programmation.
+Une autre tache quotidienne ou l'intelligence artificielle servirait énormement est celle des
+éstimations des paiements lorsque une réforme politique est proposée. Auparavant, la tache
+s'annoncait très difficile. Les politiques ont la tendance de passer d'une proposition a l'autre de
+manière spontanèe, on est donc pas capable y produire les simulations dans ces courts delais.
+L'intelligence artificielle pourrait etre capable d'intepreter l'intention des politiques et en
+produire les simulations adéquates.
+En conclusion, ce n'est que une question de temps jusqu'au moment ou l'intelligence
+artificielle va se tailler la part du lion des processus automatisés qui gérent quotidiennement
+au sein de notre service des pensions. On attend ce moment là !
+
+TEXTE 2
+Cher collègue, chère collègue,
+une erreur de calcul a ètè observèe suite à une plainte portée par un pensionè, prècisèment, les
+droits de pension octroyès au monsieur Frederick Mertens, numéro national 780602-
+122333 ne correspondent pas aux regles du processus de calcul. En regardant en détail le
+souci,on voit clairement que l'algorithme employé n'est pas de tout correct.
+Afin de corrigér l'execution de ce processus qui peut aussi influencer le caclul de plusiers
+autres de nos paiements,il faudra faire une demande officielle auprès du département de calcul
+pour obtenir l'accord d'une intevention manuelle. Je vais introduire la demande moi meme
+avec une decription eclairèe immediatement.
+Une fois le problème resolu, le monsieur va recevoir un decompte couvrant la difference de
+pension.
+J'ai déjà contacté le client pour le rassurer, il est content de cette démarche.
+Pour plus de détails,je reste à votre disposition.
+cordialement,
+Pippo palino, Responsable ICT, Service calcul droits de pension
